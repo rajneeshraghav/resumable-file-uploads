@@ -271,7 +271,7 @@ declare module Resumable {
     /**
      *  Uploading completed.
      **/
-    on(event: 'complete', callback: () => void): void;
+    on(event: 'complete', callback: (file: ResumableFile) => void): void;
     /**
      *  Uploading progress.
      **/

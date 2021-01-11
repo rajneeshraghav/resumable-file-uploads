@@ -1,24 +1,25 @@
 {
-  "name": "resumablejs",
-  "version": "1.1.0",
-  "description": "A JavaScript library for providing multiple simultaneous, stable, fault-tolerant and resumable/restartable uploads via the HTML5 File API.",
+  "name": "resumable-file-uploads",
+  "version": "1.0.0",
+  "description": "Pausable, resumable, file uploader with custom auth handler callbacks",
   "main": "resumable.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/23/resumable.js.git"
+    "url": "git+https://github.com/rajneeshraghav/resumable-file-uploads.git"
   },
   "keywords": [
-    "html5",
+    "resumable",
+    "big",
     "file",
-    "upload"
+    "uploads"
   ],
-  "author": "https://github.com/23/resumable.js/graphs/contributors",
-  "license": "MIT",
+  "author": "Rajneesh Raghav",
+  "license": "ISC",
   "bugs": {
-    "url": "https://github.com/23/resumable.js/issues"
+    "url": "https://github.com/rajneeshraghav/resumable-file-uploads/issues"
   },
-  "homepage": "https://github.com/23/resumable.js#readme"
+  "homepage": "https://github.com/rajneeshraghav/resumable-file-uploads#readme"
 }

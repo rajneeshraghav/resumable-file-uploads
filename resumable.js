@@ -330,7 +330,7 @@
     };
 
     $.appendFilesFromFileList = function (fileList, event) {
-      debugger;
+      // debugger;
       // check for uploading too many files
       var errorCount = 0;
       var o = $.getOpt(['maxFiles', 'minFileSize', 'maxFileSize', 'maxFilesErrorCallback', 'minFileSizeErrorCallback', 'maxFileSizeErrorCallback', 'fileType', 'fileTypeErrorCallback']);
@@ -444,7 +444,7 @@
         switch (event) {
           case 'progress':
             $.resumableObj.fire('fileProgress', $, message);
-            debugger;
+            //debugger;
             break;
           case 'error':
             $.abort();
@@ -522,7 +522,7 @@
         }, 0);
       };
       $.progress = function () {
-        debugger;
+        // debugger;
         if (_error) return (1);
         // Sum up progress across everything
         var ret = 0;
@@ -531,7 +531,11 @@
           if (c.status() == 'error') error = true;
           ret += c.progress(true); // get chunk progress relative to entire file
         });
-        ret = (error ? 1 : (ret > 0.99999 ? 1 : ret));
+
+        //  ret = (error ? 1 : (ret > 0.99999 ? 1 : ret));
+        //comment abole line, if there is any error it will not set percent to 1
+        ret = (error ? ret : (ret > 0.99999 ? 1 : ret));
+
         ret = Math.max($._prevProgress, ret); // We don't want to lose percentages when an upload is paused
         $._prevProgress = ret;
         localStorage.progress = ret;
@@ -551,7 +555,11 @@
         var outstanding = false;
         $h.each($.chunks, function (chunk) {
           var status = chunk.status();
-          if (status == 'pending' || status == 'uploading' || chunk.preprocessState === 1) {
+
+          if (chunk.preprocessState === 2) {
+            debugger;
+            return (!outstanding);
+          } else if (status == 'pending' || status == 'uploading' || chunk.preprocessState === 1) {
             outstanding = true;
             return (false);
           }
@@ -869,12 +877,20 @@
         if ($.pendingRetry) return (0);
         if (!$.xhr || !$.xhr.status) factor *= .95;
         var s = $.status();
+        // need to handle Error here for chunks
+        //Rajneesh Raghav
         switch (s) {
           case 'success':
           case 'error':
             return (1 * factor);
           case 'pending':
-            return (0 * factor);
+            if ($.preprocessState === 2) {
+              return (1 * factor);
+            }
+            else {
+              return (0 * factor);
+            }
+
           default:
             return ($.loaded / ($.endByte - $.startByte) * factor);
         }
@@ -886,7 +902,7 @@
     $.uploadNextChunk = function () {
       var found = false;
 
- 
+
       // In some cases (such as videos) it's really handy to upload the first
       // and last chunk of a file quickly; this let's the server check the file's
       // metadata and determine if there's even a point in continuing.
@@ -895,7 +911,7 @@
           if (file.chunks.length && file.chunks[0].status() == 'pending' && file.chunks[0].preprocessState === 0) {
 
             $.fire('ChunkComplete', file);
-            debugger;
+            // debugger;
             file.chunks[0].send();
             found = true;
             return (false);
@@ -905,7 +921,7 @@
             file.chunks[file.chunks.length - 1].send();
 
             $.fire('ChunkComplete', file);
-            debugger;
+            //   debugger;
             found = true;
             return (false);
           }
@@ -920,7 +936,7 @@
             if (chunk.status() == 'pending' && chunk.preprocessState === 0) {
               chunk.send();
               $.fire('ChunkComplete', file);
-              debugger;
+              // debugger;
               found = true;
               return (false);
             }
@@ -932,15 +948,19 @@
 
       // The are no more outstanding chunks to upload, check is everything is done
       var outstanding = false;
+      var fileAsCallback = null;
       $h.each($.files, function (file) {
         if (!file.isComplete()) {
           outstanding = true;
           return (false);
+        } else {
+          fileAsCallback = file;
         }
       });
       if (!outstanding) {
         // All chunks have been uploaded, complete
-        $.fire('complete');
+        $.fire('complete', fileAsCallback);
+        // $.fire('filesAdded', files);
       }
       return (false);
     };
