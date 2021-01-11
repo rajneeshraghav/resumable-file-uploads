@@ -376,7 +376,7 @@ declare module Resumable {
   class ResumableChunk { }
 }
 
-declare module 'resumablejs' {
+declare module 'resumable-file-uploads' {
   export = Resumable.Resumable;
 }
 
