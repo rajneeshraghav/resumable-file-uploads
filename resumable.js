@@ -785,8 +785,10 @@
             params.push([encodeURIComponent(parameterNamespace + k), encodeURIComponent(v)].join('='));
           });
         } else {
+
           // Add data from the query options
           data = new FormData();
+
           $h.each(query, function (k, v) {
             data.append(parameterNamespace + k, v);
             params.push([encodeURIComponent(parameterNamespace + k), encodeURIComponent(v)].join('='));
@@ -808,7 +810,9 @@
         var method = $.getOpt('uploadMethod');
 
         $.xhr.open(method, target);
-        //$.xhr.setRequestHeader('Content-Type', 'multipart/form-data')
+        $.xhr.setRequestHeader('tenantId', localStorage.getItem("tenantId"))
+
+        // --- //
         $.xhr.setRequestHeader("Authorization", 'Bearer ' + localStorage.getItem('token'))
 
         if ($.getOpt('method') === 'octet') {

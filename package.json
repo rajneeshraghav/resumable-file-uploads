@@ -1,11 +1,8 @@
 {
   "name": "resumable-file-uploads",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Pausable, resumable, file uploader with custom auth handler callbacks",
-  "main": "resumable.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "main": "resumable.js", 
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rajneeshraghav/resumable-file-uploads.git"
